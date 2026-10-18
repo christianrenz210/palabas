@@ -470,9 +470,9 @@ export default {
     const url    = new URL(request.url)
     const origin = request.headers.get('Origin') || ''
     const allowed= (env.FRONTEND_URL||'*').split(',').map(s=>s.trim())
-    const ok     = allowed.includes('*') || allowed.includes(origin)
+    const ok     = allowed.includes('*') || allowed.includes(origin) || !origin
     const cors   = {
-      'Access-Control-Allow-Origin':  ok ? origin : (allowed[0]||'*'),
+      'Access-Control-Allow-Origin':  ok ? (origin || '*') : (allowed[0]||'*'),
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     }
