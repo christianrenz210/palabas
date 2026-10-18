@@ -1,14 +1,13 @@
-// Ang APK ay nasa mismong website (/palabas.apk), kinokopya mula sa
-// pinakabagong GitHub release tuwing nagde-deploy sa Vercel.
-// Kaya hindi na dumadaan sa github.com ang download.
+// The APK is hosted on this site (/moviescene.apk). Vercel copies it from the
+// latest GitHub release on every deploy, so downloads never go through github.com.
 const REPO = "christianrenz210/palabas";
-const LOCAL_APK = "/palabas.apk";
+const LOCAL_APK = "/moviescene.apk";
 const GITHUB_APK = `https://github.com/${REPO}/releases/latest/download/palabas.apk`;
-const COUNTDOWN = 3; // segundo bago mag-auto download
+const COUNTDOWN = 3; // seconds before the automatic download
 
 let apkUrl = LOCAL_APK;
 
-// Kung wala ang APK sa site (hal. binuksan lang ang file sa computer), GitHub ang gamitin
+// If the APK isn't on this site (e.g. the page was opened as a local file), use GitHub
 fetch(LOCAL_APK, { method: "HEAD", cache: "no-store" })
   .then((r) => {
     if (!r.ok) apkUrl = GITHUB_APK;
@@ -19,28 +18,29 @@ fetch(LOCAL_APK, { method: "HEAD", cache: "no-store" })
   })
   .catch(() => { apkUrl = GITHUB_APK; });
 
-// Ipakita ang version ng pinakabagong release
+// Show the version of the latest release
 fetch(`https://api.github.com/repos/${REPO}/releases/latest`)
   .then((r) => (r.ok ? r.json() : null))
   .then((rel) => {
-    if (rel && rel.name) document.getElementById("ver").textContent = rel.name.replace(/^Palabas\s*/i, "");
+    const v = rel && (rel.name || rel.tag_name || "").match(/v?\d+(\.\d+)*/i);
+    if (v) document.getElementById("ver").textContent = v[0].startsWith("v") ? v[0] : "v" + v[0];
   })
   .catch(() => {});
 
-const btn = document.getElementById("download-btn");
 const statusBox = document.getElementById("status");
 const statusText = document.getElementById("status-text");
 const barFill = document.getElementById("bar-fill");
+const btn = document.getElementById("download-btn");
 document.getElementById("year").textContent = new Date().getFullYear();
 
 let started = false;
 
 function startDownload() {
-  // Same-site na link + "download" attribute: magse-save agad ang file,
-  // walang bagong tab at walang lilipatang page.
+  // Same-site link + "download" attribute: the file saves right away,
+  // with no new tab and no page change.
   const a = document.createElement("a");
   a.href = apkUrl;
-  a.download = "palabas.apk";
+  a.download = "moviescene.apk";
   a.rel = "noopener";
   document.body.appendChild(a);
   a.click();
@@ -49,11 +49,11 @@ function startDownload() {
   started = true;
   barFill.style.width = "100%";
   statusBox.classList.add("done");
-  statusText.textContent = "✓ Nagsimula na ang download. Tingnan ang notification o Downloads folder.";
-  document.getElementById("btn-label").textContent = "I-download ulit";
+  statusText.textContent = "✓ Download started. Check your notifications or Downloads folder.";
+  document.getElementById("btn-label").textContent = "Download again";
 }
 
-// Countdown + auto download
+// Countdown + automatic download
 let left = COUNTDOWN;
 const countEl = document.getElementById("count");
 barFill.style.width = "0%";

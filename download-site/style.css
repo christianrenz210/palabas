@@ -1,4 +1,4 @@
-/* Theme from the Palabas streaming prototype: lights off, screen on. */
+/* MovieScene theme: lights off, screen on. */
 :root {
   --bg: #0c0d13;
   --app: #111219;
@@ -50,8 +50,8 @@ body {
 .masthead { display: flex; flex-direction: column; gap: 10px; }
 .masthead h1 {
   font-family: var(--f-disp); font-weight: 800;
-  font-size: clamp(56px, 15vw, 104px); line-height: .85;
-  overflow-wrap: anywhere;
+  font-size: clamp(48px, 13vw, 96px); line-height: .85;
+  white-space: nowrap;
   letter-spacing: .01em; text-transform: uppercase;
 }
 .masthead h1 span, .logo span { color: var(--accent); }
@@ -189,6 +189,7 @@ footer { font-size: 12px; color: var(--faint); }
     padding-top: 72px;
   }
   .masthead { grid-area: head; min-width: 0; }
+  .masthead h1 { font-size: clamp(64px, 5.8vw, 96px); }
   .dl-card { grid-area: card; position: sticky; top: 32px; }
   .install { grid-area: install; }
   footer { grid-area: foot; }

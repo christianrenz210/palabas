@@ -1,14 +1,14 @@
 {
   "framework": null,
   "installCommand": "",
-  "buildCommand": "mkdir -p dist && cp index.html style.css script.js dist/ && curl -fsSL -o dist/palabas.apk https://github.com/christianrenz210/palabas/releases/latest/download/palabas.apk",
+  "buildCommand": "mkdir -p dist && cp index.html style.css script.js dist/ && curl -fsSL -o dist/moviescene.apk https://github.com/christianrenz210/palabas/releases/latest/download/palabas.apk",
   "outputDirectory": "dist",
   "headers": [
     {
-      "source": "/palabas.apk",
+      "source": "/moviescene.apk",
       "headers": [
         { "key": "Content-Type", "value": "application/vnd.android.package-archive" },
-        { "key": "Content-Disposition", "value": "attachment; filename=\"palabas.apk\"" },
+        { "key": "Content-Disposition", "value": "attachment; filename=\"moviescene.apk\"" },
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     }
