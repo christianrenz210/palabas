@@ -49,8 +49,8 @@ function startDownload() {
   started = true;
   barFill.style.width = "100%";
   statusBox.classList.add("done");
-  statusText.innerHTML = "✓ Nagsimula na ang download! Tingnan ang notification o Downloads folder.";
-  btn.lastChild.textContent = " I-download ulit";
+  statusText.textContent = "✓ Nagsimula na ang download. Tingnan ang notification o Downloads folder.";
+  document.getElementById("btn-label").textContent = "I-download ulit";
 }
 
 // Countdown + auto download

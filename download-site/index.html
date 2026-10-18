@@ -2,51 +2,73 @@
 <html lang="fil">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0c0d13">
   <title>Palabas – I-download ang App</title>
-  <meta name="description" content="I-download ang Palabas APK para sa Android.">
+  <meta name="description" content="I-download ang Palabas APK para sa Android. Libreng panood, walang sign-up.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="bg-glow"></div>
+  <div class="wrap">
+    <header class="masthead">
+      <p class="eyebrow">Android app · libreng panood</p>
+      <h1>Pala<span>bas</span></h1>
+      <p class="lede">Mga palabas at pelikula sa phone mo. I-download ang APK, i-install, at manood agad. Walang account o card na kailangan.</p>
+    </header>
 
-  <main class="card">
-    <div class="logo">
-      <svg viewBox="0 0 64 64" aria-hidden="true">
-        <rect x="6" y="12" width="52" height="40" rx="10" fill="currentColor" opacity=".18"/>
-        <path d="M27 23v18l15-9z" fill="currentColor"/>
-      </svg>
-    </div>
+    <main class="dl-card" aria-labelledby="dl-title">
+      <div class="bill" aria-hidden="true">
+        <div class="poster p1"><span class="ptitle">Low Tide</span></div>
+        <div class="poster p2"><span class="ptitle">Neon Orchard</span></div>
+        <div class="poster p3"><span class="ptitle">Paper Moons</span></div>
+        <div class="poster p4"><span class="ptitle">Salt Harbor</span></div>
+      </div>
 
-    <h1>Palabas</h1>
-    <p class="version">Version <span id="ver">v9</span> • Android APK • <span id="size">4.05 MB</span></p>
+      <div class="dl-body">
+        <div class="app-row">
+          <span class="app-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 4.5v15a.8.8 0 0 0 1.2.7l12-7.5a.8.8 0 0 0 0-1.4l-12-7.5A.8.8 0 0 0 7 4.5z" fill="currentColor"/></svg>
+          </span>
+          <div>
+            <h2 id="dl-title" class="logo">Pala<span>bas</span></h2>
+            <div class="meta">
+              <span class="badge" id="ver">v9</span>
+              <span>Android</span>
+              <span class="mono" id="size">4.05 MB</span>
+            </div>
+          </div>
+        </div>
 
-    <div id="status" class="status">
-      <p id="status-text">Magsisimula ang download sa <strong id="count">3</strong>...</p>
-      <div class="bar"><div id="bar-fill" class="bar-fill"></div></div>
-    </div>
+        <span class="free">Libre · walang sign-up</span>
 
-    <button id="download-btn" class="btn">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      I-download ang APK
-    </button>
+        <div id="status" class="status" role="status" aria-live="polite">
+          <p id="status-text">Magsisimula ang download sa <strong id="count">3</strong></p>
+          <div class="prog"><i id="bar-fill"></i></div>
+        </div>
 
-    <p class="hint">Hindi nagsimula? Pindutin ang button sa itaas.</p>
+        <button id="download-btn" class="btn btn-primary" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="btn-label">I-download ang APK</span>
+        </button>
+        <p class="hint">Hindi nagsimula? Pindutin ang button.</p>
+      </div>
+    </main>
 
-    <section class="steps">
-      <h2>Paano i-install</h2>
-      <ol>
-        <li>Buksan ang <b>palabas.apk</b> sa Downloads.</li>
-        <li>Kung may lumabas na babala, payagan ang <b>"Install unknown apps"</b> para sa browser mo.</li>
-        <li>Pindutin ang <b>Install</b>, tapos <b>Open</b>. Enjoy!</li>
+    <section class="install" aria-labelledby="install-title">
+      <p class="eyebrow">Pagkatapos mag-download</p>
+      <h2 id="install-title">I-install sa tatlong hakbang</h2>
+      <ol class="steps">
+        <li class="step"><span class="n">1</span><span><b>Buksan ang file</b><span>Hanapin ang palabas.apk sa notification o sa Downloads folder.</span></span></li>
+        <li class="step"><span class="n">2</span><span><b>Payagan ang install</b><span>Kung may babala, i-on ang "Install unknown apps" para sa browser mo.</span></span></li>
+        <li class="step"><span class="n">3</span><span><b>Install, tapos Open</b><span>Pumili ng profile at manood na.</span></span></li>
       </ol>
     </section>
-  </main>
 
-  <footer>© <span id="year"></span> Palabas</footer>
+    <footer>© <span id="year"></span> Palabas</footer>
+  </div>
 
   <script src="script.js"></script>
 </body>
