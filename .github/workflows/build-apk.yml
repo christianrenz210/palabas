@@ -60,3 +60,11 @@ jobs:
             Auto-build from commit ${{ github.sha }}
           files: palabas.apk
           prerelease: false
+
+      # I-redeploy ang download website para makuha nito ang bagong APK.
+      # Lagyan ng repo secret na VERCEL_DEPLOY_HOOK (Vercel > Settings > Git > Deploy Hooks).
+      - name: Update download site
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$HOOK" ]; then curl -fsS -X POST "$HOOK"; else echo "No VERCEL_DEPLOY_HOOK secret; skipping"; fi
