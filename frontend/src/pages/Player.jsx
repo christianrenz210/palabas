@@ -32,6 +32,19 @@ function CinePlayer({ t, s, e, season, videos }) {
   const [ended, setEnded] = useState(false)
   const [nextIn, setNextIn] = useState(null)
   const [showEps, setShowEps] = useState(false)
+  const [idle, setIdle] = useState(false)
+  const idleTimer = useRef(null)
+
+  const wake = useCallback(() => {
+    setIdle(false)
+    clearTimeout(idleTimer.current)
+    idleTimer.current = setTimeout(() => setIdle(true), 3000)
+  }, [])
+
+  useEffect(() => {
+    wake()
+    return () => clearTimeout(idleTimer.current)
+  }, [wake])
 
   const isTv = t.type === 'tv'
   const ep = season?.episodes.find((x) => x.number === e)
@@ -101,12 +114,20 @@ function CinePlayer({ t, s, e, season, videos }) {
   return (
     <div className="cine">
       {/* ── Stage ── */}
-      <div className="cine-stage">
-        {/* Top bar */}
+      <div
+        className={`cine-stage${idle ? ' idle' : ''}`}
+        onPointerMove={wake}
+        onPointerDown={wake}
+      >
+        {/* Shade gradient for top-bar readability */}
+        <div className="cine-shade" aria-hidden="true" />
+
+        {/* Top bar — absolute overlay */}
         <div className="cine-top">
           <button className="cine-back" aria-label="Close player" onClick={close}>
             <DownIcon />
           </button>
+          <span className="cine-logo">Movie<span>Scene</span></span>
           <div className="cine-meta">
             <h2 className="cine-title">{t.title}</h2>
             <p className="cine-sub">{subtitle}</p>
@@ -130,38 +151,14 @@ function CinePlayer({ t, s, e, season, videos }) {
           </div>
         </div>
 
-        {/* Video screen */}
+        {/* Video screen — fills stage */}
         <div className="cine-screen">
           {mode === 'stream' ? (
-            <>
-              <VidApiPlayer
-                key={`${t.type}-${t.id}-${s}-${e}`}
-                type={t.type} id={t.id} season={s} episode={e}
-                onEnded={onStreamEnded}
-              />
-              {ended && (
-                <div className="cine-nextcard">
-                  {next ? (
-                    <>
-                      <span className="nc-lbl">Up next</span>
-                      <h3>{isTv ? `S${next.s}:E${next.e} · ${next.name}` : t.title}</h3>
-                      <div className="nc-btns">
-                        <button className="btn btn-primary nc-play" onClick={goNext}>
-                          <PlayIcon /> Play now {nextIn !== null && <span className="nc-count">{nextIn}</span>}
-                        </button>
-                        <button className="btn btn-ghost nc-cancel" onClick={() => { setNextIn(null); setEnded(false) }}>
-                          Cancel
-                        </button>
-                      </div>
-                    </>
-                  ) : (
-                    <Link className="btn btn-ghost" to={`/title/${t.type}/${t.id}`} replace>
-                      Back to {t.title}
-                    </Link>
-                  )}
-                </div>
-              )}
-            </>
+            <VidApiPlayer
+              key={`${t.type}-${t.id}-${s}-${e}`}
+              type={t.type} id={t.id} season={s} episode={e}
+              onEnded={onStreamEnded}
+            />
           ) : videos.length === 0 || allYtFailed ? (
             <div className="no-video">
               <Poster src={(isTv && ep?.still_lg) || t.backdrop} title={t.title} wide className="frame" />
@@ -183,6 +180,30 @@ function CinePlayer({ t, s, e, season, videos }) {
             />
           )}
         </div>
+
+        {/* Next-episode card — overlaid above screen */}
+        {mode === 'stream' && ended && (
+          <div className="cine-nextcard">
+            {next ? (
+              <>
+                <span className="nc-lbl">Up next</span>
+                <h3>{isTv ? `S${next.s}:E${next.e} · ${next.name}` : t.title}</h3>
+                <div className="nc-btns">
+                  <button className="btn btn-primary nc-play" onClick={goNext}>
+                    <PlayIcon /> Play now {nextIn !== null && <span className="nc-count">{nextIn}</span>}
+                  </button>
+                  <button className="btn btn-ghost nc-cancel" onClick={() => { setNextIn(null); setEnded(false) }}>
+                    Cancel
+                  </button>
+                </div>
+              </>
+            ) : (
+              <Link className="btn btn-ghost" to={`/title/${t.type}/${t.id}`} replace>
+                Back to {t.title}
+              </Link>
+            )}
+          </div>
+        )}
 
         {/* Episodes panel */}
         {isTv && season && (

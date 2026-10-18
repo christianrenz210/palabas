@@ -320,33 +320,41 @@ h1, h2, h3, p { margin: 0; }
 /* ---------- cinema player ---------- */
 .cine { position: fixed; inset: 0; z-index: 60; background: #09090c; color: #f5f1e8; display: flex; flex-direction: column; overflow-y: auto; font-family: var(--f-body); }
 
-/* Stage: top bar + video, fixed height based on vw */
-.cine-stage { position: relative; width: 100%; flex-shrink: 0; background: #000; display: flex; flex-direction: column; height: calc(56.25vw + 60px); max-height: 100svh; }
-@media (min-width: 860px) { .cine-stage { height: calc(56.25vw + 56px); max-height: 92svh; } }
+/* Stage: 16:9 aspect box, all children overlaid */
+.cine-stage { position: relative; width: 100%; flex-shrink: 0; background: #000; aspect-ratio: 16/9; max-height: calc(100svh - 56px); border-radius: 10px; overflow: hidden; outline: none; user-select: none; -webkit-user-select: none; }
+@media (min-width: 860px) { .cine-stage { max-height: 92svh; } }
+.cine-stage.idle { cursor: none; }
+.cine-stage.idle .cine-shade, .cine-stage.idle .cine-top { opacity: 0; pointer-events: none; }
 
-/* Top bar — always visible, not overlaid */
-.cine-top { display: flex; align-items: center; gap: 10px; padding: calc(12px + env(safe-area-inset-top)) 14px 12px; background: linear-gradient(to bottom, #0d0d12, rgba(9,9,12,.85)); flex-shrink: 0; }
-.cine-back { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.1); color: #fff; flex-shrink: 0; transition: background .15s; }
-.cine-back:hover { background: rgba(255,255,255,.2); }
-.cine-back svg { width: 22px; height: 22px; }
+/* Shade: top gradient so white text stays readable over video */
+.cine-shade { position: absolute; inset: 0; pointer-events: none; z-index: 2; background: linear-gradient(to bottom, rgba(0,0,0,.65), transparent 28%); transition: opacity .35s; }
+
+/* Top bar — absolute overlay at top of stage */
+.cine-top { position: absolute; left: 0; right: 0; top: 0; z-index: 3; display: flex; align-items: center; gap: 14px; padding: calc(clamp(10px,2vw,22px) + env(safe-area-inset-top)) clamp(12px,2.4vw,28px) clamp(10px,2vw,22px); transition: opacity .35s; }
+.cine-back { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: #fff; flex-shrink: 0; transition: transform .15s; }
+.cine-back:hover { transform: scale(1.12); }
+.cine-back svg { width: clamp(22px,2.4vw,28px); height: clamp(22px,2.4vw,28px); }
+.cine-logo { font-family: var(--f-disp); font-weight: 800; font-size: clamp(15px,1.8vw,21px); text-transform: uppercase; letter-spacing: .02em; line-height: 1; flex-shrink: 0; }
+.cine-logo span { color: var(--accent); }
 .cine-meta { flex: 1; min-width: 0; }
-.cine-title { font-size: clamp(14px, 2vw, 17px); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; }
-.cine-sub { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 1px; }
+.cine-title { font-size: clamp(13px,1.8vw,17px); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; }
+.cine-sub { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cine-acts { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.cine-ib { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.1); color: #fff; transition: background .15s; }
-.cine-ib:hover, .cine-ib.active { background: rgba(255,255,255,.2); }
-.cine-mode-btn { height: 34px; padding: 0 13px; border-radius: 8px; font-size: 12px; font-weight: 700; background: rgba(255,255,255,.1); color: #f5f1e8; border: 1px solid rgba(255,255,255,.2); transition: background .15s; }
+.cine-ib { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: #fff; transition: transform .15s; }
+.cine-ib:hover, .cine-ib.active { transform: scale(1.12); }
+.cine-ib svg { width: clamp(22px,2.4vw,28px); height: clamp(22px,2.4vw,28px); }
+.cine-mode-btn { height: 34px; padding: 0 13px; border-radius: 8px; font-size: 12px; font-weight: 700; background: rgba(255,255,255,.1); color: #f5f1e8; border: 1px solid rgba(255,255,255,.2); transition: background .15s; backdrop-filter: blur(4px); }
 .cine-mode-btn:hover { background: rgba(255,255,255,.2); }
 
-/* Screen: fills remaining stage space below top bar */
-.cine-screen { position: relative; flex: 1; min-height: 0; width: 100%; background: #000; overflow: hidden; }
+/* Screen: fills entire stage behind overlays */
+.cine-screen { position: absolute; inset: 0; width: 100%; height: 100%; background: #000; overflow: hidden; z-index: 1; }
 
 /* iframes fill the screen */
 .vap { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; display: block; }
 .yt, .yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-/* next-episode card overlay */
-.cine-nextcard { position: absolute; bottom: clamp(14px, 4%, 40px); right: clamp(14px, 4%, 40px); z-index: 8; min-width: min(300px, calc(100% - 28px)); display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 12px; background: rgba(18,18,24,.92); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(8px); }
+/* next-episode card overlay — direct child of .cine-stage */
+.cine-nextcard { position: absolute; bottom: clamp(14px, 4%, 40px); right: clamp(14px, 4%, 40px); z-index: 9; min-width: min(300px, calc(100% - 28px)); display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 12px; background: rgba(18,18,24,.92); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(8px); }
 .nc-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.5); }
 .cine-nextcard h3 { font-size: 15px; font-weight: 700; line-height: 1.3; }
 .nc-btns { display: flex; gap: 8px; }
