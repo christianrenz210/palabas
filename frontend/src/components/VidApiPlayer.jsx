@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { ScreenOrientation } from '@capacitor/screen-orientation'
 
 function storageKey(type, id, season, episode) {
   return `vap_${type}_${id}${season != null ? `_${season}_${episode}` : ''}`
@@ -51,22 +52,27 @@ export default function VidApiPlayer({ type, id, season, episode, onEnded }) {
   }, [key])
 
   useEffect(() => {
+    const lockLandscape = async () => {
+      try { await ScreenOrientation.lock({ orientation: 'landscape' }) } catch {
+        try { await screen.orientation?.lock?.('landscape') } catch {}
+      }
+    }
+    const unlockOrientation = async () => {
+      try { await ScreenOrientation.unlock() } catch {
+        try { screen.orientation?.unlock?.() } catch {}
+      }
+    }
     const onFsChange = () => {
       const fs = !!(document.fullscreenElement || document.webkitFullscreenElement)
-      try {
-        if (fs) {
-          screen.orientation?.lock?.('landscape').catch(() => {})
-        } else {
-          screen.orientation?.unlock?.()
-        }
-      } catch {}
+      if (fs) lockLandscape()
+      else unlockOrientation()
     }
     document.addEventListener('fullscreenchange', onFsChange)
     document.addEventListener('webkitfullscreenchange', onFsChange)
     return () => {
       document.removeEventListener('fullscreenchange', onFsChange)
       document.removeEventListener('webkitfullscreenchange', onFsChange)
-      try { screen.orientation?.unlock?.() } catch {}
+      unlockOrientation()
     }
   }, [])
 
