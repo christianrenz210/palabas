@@ -1,1 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0d0e14"/><path d="M6 12a2 2 0 0 0 0 4 2 2 0 0 1 0 4v2h20v-2a2 2 0 0 1 0-4 2 2 0 0 0 0-4v-2H6z" fill="#f2b544"/><path d="M19 10v12" stroke="#0d0e14" stroke-width="1.6" stroke-dasharray="2 2"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#0d0e14"/>
+  <!-- clapperboard body -->
+  <rect x="5" y="13" width="22" height="14" rx="2" fill="#f2b544"/>
+  <!-- clapperboard top bar -->
+  <rect x="5" y="9" width="22" height="5" rx="1.5" fill="#e8a832"/>
+  <!-- stripes on top bar -->
+  <path d="M10 9 L8 14 M15 9 L13 14 M20 9 L18 14 M25 9 L23 14" stroke="#0d0e14" stroke-width="2" stroke-linecap="round"/>
+  <!-- film icon lines on body -->
+  <rect x="8" y="16" width="3" height="7" rx="1" fill="#0d0e14" opacity="0.35"/>
+  <rect x="21" y="16" width="3" height="7" rx="1" fill="#0d0e14" opacity="0.35"/>
+  <!-- play triangle -->
+  <path d="M14 18.5 L14 23.5 L20 21 Z" fill="#0d0e14" opacity="0.5"/>
+</svg>

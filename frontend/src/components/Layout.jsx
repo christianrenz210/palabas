@@ -14,7 +14,7 @@ const ALL_TABS = [
 export function Logo() {
   return (
     <span className="logo">
-      Pala<span>bas</span>
+      Movie<span>Scene</span>
     </span>
   )
 }
@@ -53,7 +53,7 @@ export default function Layout() {
       <header className={`site-head ${overlay ? 'overlay' : ''} ${scrolled || !overlay ? 'solid' : ''}`}>
         <div className="wrap site-head-in">
           <div className="head-left">
-            <Link to="/" aria-label="Palabas home">
+            <Link to="/" aria-label="MovieScene home">
               <Logo />
             </Link>
             <nav className="top-nav" aria-label="Main">
