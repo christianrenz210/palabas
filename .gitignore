@@ -1,0 +1,16 @@
+backend/
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+
+# Capacitor
+frontend/android/.gradle/
+frontend/android/app/build/
+frontend/android/build/
+frontend/android/local.properties
+
+# Wrangler
+worker/.wrangler/
+*.log

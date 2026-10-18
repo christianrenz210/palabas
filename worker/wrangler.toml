@@ -1,0 +1,8 @@
+name = "palabas-api"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+TMDB_REGION = "PH"
+TMDB_LANGUAGE = "en-US"
+FRONTEND_URL = "https://palabas.pages.dev"
