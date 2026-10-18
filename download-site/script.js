@@ -3,7 +3,6 @@
 const REPO = "christianrenz210/palabas";
 const LOCAL_APK = "/moviescene.apk";
 const GITHUB_APK = `https://github.com/${REPO}/releases/latest/download/palabas.apk`;
-const COUNTDOWN = 3; // seconds before the automatic download
 
 let apkUrl = LOCAL_APK;
 
@@ -27,15 +26,12 @@ fetch(`https://api.github.com/repos/${REPO}/releases/latest`)
   })
   .catch(() => {});
 
-const statusBox = document.getElementById("status");
 const statusText = document.getElementById("status-text");
-const barFill = document.getElementById("bar-fill");
 const btn = document.getElementById("download-btn");
 document.getElementById("year").textContent = new Date().getFullYear();
 
-let started = false;
-
-function startDownload() {
+// Downloads only when the button is tapped.
+btn.addEventListener("click", () => {
   // Same-site link + "download" attribute: the file saves right away,
   // with no new tab and no page change.
   const a = document.createElement("a");
@@ -46,30 +42,7 @@ function startDownload() {
   a.click();
   a.remove();
 
-  started = true;
-  barFill.style.width = "100%";
-  statusBox.classList.add("done");
   statusText.textContent = "✓ Download started. Check your notifications or Downloads folder.";
+  statusText.classList.add("done");
   document.getElementById("btn-label").textContent = "Download again";
-}
-
-// Countdown + automatic download
-let left = COUNTDOWN;
-const countEl = document.getElementById("count");
-barFill.style.width = "0%";
-
-const timer = setInterval(() => {
-  left--;
-  barFill.style.width = ((COUNTDOWN - left) / COUNTDOWN) * 100 + "%";
-  if (left > 0) {
-    countEl.textContent = left;
-  } else {
-    clearInterval(timer);
-    if (!started) startDownload();
-  }
-}, 1000);
-
-btn.addEventListener("click", () => {
-  clearInterval(timer);
-  startDownload();
 });
