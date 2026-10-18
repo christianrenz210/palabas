@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fil">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Palabas – I-download ang App</title>
+  <meta name="description" content="I-download ang Palabas APK para sa Android.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <main class="card">
+    <div class="logo">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="6" y="12" width="52" height="40" rx="10" fill="currentColor" opacity=".18"/>
+        <path d="M27 23v18l15-9z" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <h1>Palabas</h1>
+    <p class="version">Version <span id="ver">v9</span> • Android APK • <span id="size">4.05 MB</span></p>
+
+    <div id="status" class="status">
+      <p id="status-text">Magsisimula ang download sa <strong id="count">3</strong>...</p>
+      <div class="bar"><div id="bar-fill" class="bar-fill"></div></div>
+    </div>
+
+    <button id="download-btn" class="btn">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      I-download ang APK
+    </button>
+
+    <p class="hint">Hindi nagsimula? Pindutin ang button sa itaas.</p>
+
+    <section class="steps">
+      <h2>Paano i-install</h2>
+      <ol>
+        <li>Buksan ang <b>palabas.apk</b> sa Downloads.</li>
+        <li>Kung may lumabas na babala, payagan ang <b>"Install unknown apps"</b> para sa browser mo.</li>
+        <li>Pindutin ang <b>Install</b>, tapos <b>Open</b>. Enjoy!</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>© <span id="year"></span> Palabas</footer>
+
+  <iframe id="dl-frame" title="download" hidden></iframe>
+  <script src="script.js"></script>
+</body>
+</html>
