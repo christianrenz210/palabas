@@ -18,8 +18,12 @@ function getResumeAt(key) {
  * Embeds a vaplayer.ru player for full movie or TV-episode playback.
  * Progress is saved to localStorage so the user can resume later.
  * Fires onEnded() when the media reaches its end.
+ *
+ * With adBlock on, the iframe is sandboxed without allow-popups and
+ * allow-top-navigation, so the embed's ads can't open new tabs/windows
+ * (or Chrome, in the Android app) or redirect the whole page.
  */
-export default function VidApiPlayer({ type, id, season, episode, onEnded }) {
+export default function VidApiPlayer({ type, id, season, episode, onEnded, adBlock = true }) {
   const key = storageKey(type, id, season, episode)
   const resumeAt = useRef(getResumeAt(key)).current
 
@@ -76,5 +80,15 @@ export default function VidApiPlayer({ type, id, season, episode, onEnded }) {
     }
   }, [])
 
-  return <iframe src={src} className="vap" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowFullScreen />
+  return (
+    <iframe
+      key={adBlock ? 'sandboxed' : 'open'}
+      src={src}
+      className="vap"
+      allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+      allowFullScreen
+      referrerPolicy="origin"
+      sandbox={adBlock ? 'allow-scripts allow-same-origin allow-forms allow-presentation' : undefined}
+    />
+  )
 }

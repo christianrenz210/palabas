@@ -9,6 +9,12 @@ import { useApi } from '../lib/api'
 import { useStore } from '../lib/store'
 import { mins } from '../lib/format'
 
+const AD_BLOCK_KEY = 'adblock'
+
+function readAdBlock() {
+  try { return localStorage.getItem(AD_BLOCK_KEY) !== '0' } catch { return true }
+}
+
 const SOURCE = { episode: 'This episode', season: 'This season', title: '' }
 
 function EpsIcon() {
@@ -32,6 +38,7 @@ function CinePlayer({ t, s, e, season, videos }) {
   const [ended, setEnded] = useState(false)
   const [nextIn, setNextIn] = useState(null)
   const [showEps, setShowEps] = useState(false)
+  const [adBlock, setAdBlock] = useState(readAdBlock)
   const [idle, setIdle] = useState(false)
   const idleTimer = useRef(null)
 
@@ -105,6 +112,13 @@ function CinePlayer({ t, s, e, season, videos }) {
     }
   }
 
+  const toggleAdBlock = () => {
+    const on = !adBlock
+    setAdBlock(on)
+    try { localStorage.setItem(AD_BLOCK_KEY, on ? '1' : '0') } catch {}
+    toast(on ? 'Ad block on. Pop-up ads are blocked.' : 'Ad block off. Use this only if the video won’t load.')
+  }
+
   const pickTrailer = (i) => { setYtIdx(i); setMode('trailer') }
 
   const subtitle = isTv
@@ -143,6 +157,16 @@ function CinePlayer({ t, s, e, season, videos }) {
                 <EpsIcon />
               </button>
             )}
+            {mode === 'stream' && (
+              <button
+                className="cine-mode-btn"
+                aria-pressed={adBlock}
+                title="Blocks pop-up and redirect ads. Turn off only if the video won’t load."
+                onClick={toggleAdBlock}
+              >
+                {adBlock ? 'Ad block: On' : 'Ad block: Off'}
+              </button>
+            )}
             {videos.length > 0 && (
               <button className="cine-mode-btn" onClick={() => setMode((m) => (m === 'stream' ? 'trailer' : 'stream'))}>
                 {mode === 'stream' ? 'Trailers' : 'Watch'}
@@ -158,6 +182,7 @@ function CinePlayer({ t, s, e, season, videos }) {
               key={`${t.type}-${t.id}-${s}-${e}`}
               type={t.type} id={t.id} season={s} episode={e}
               onEnded={onStreamEnded}
+              adBlock={adBlock}
             />
           ) : videos.length === 0 || allYtFailed ? (
             <div className="no-video">
